@@ -4,5 +4,3 @@ RECORD_FIELD_ID = "record_id"
 
 MAPPING_RECORD_NAME = "name"
 MAPPING_RECORD_CHOICES = "choices"
-
-SYSTEM_URI = "https://redcap.charite.de/genAdipositas"
