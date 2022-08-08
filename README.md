@@ -1,1 +1,9 @@
-# ERKER-on-FHIR
+# ERKERonFHIR
+
+## Start
+
+Start with 
+
+```bash
+uvicorn api:app --reload
+```

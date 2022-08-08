@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# IDEs
+.history
+
+# config files
+config.yml
+mappings.yml
