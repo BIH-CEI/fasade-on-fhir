@@ -6,17 +6,6 @@ from erkeronfhir.convert.generate import create_from_list
 from erkeronfhir.convert.metadata import fill_metadata
 from erkeronfhir.redcap.connector import RedcapConnector
 
-config = yaml.safe_load(Path("config.yml").read_text())
-mapping = yaml.safe_load(Path("mappings.yml").read_text())
-
-connector = RedcapConnector(**config["redcap"])
-records = connector.get_records()
-metadata = connector.get_metadata()
-
-fill_metadata(records, metadata)
-
-patients = create_from_list("Patient", records, mapping)
-
 
 class Service:
     def __init__(
@@ -25,12 +14,12 @@ class Service:
         self.config = yaml.safe_load(Path(config_file).read_text())
         self.mappings = yaml.safe_load(Path(mappings_file).read_text())
 
-        self.connector = RedcapConnector(**self.config["redcap"])
-        self.metadata = connector.get_metadata()
+        self.connector = RedcapConnector(**self.config["service"]["redcap"])
+        self.metadata = self.connector.get_metadata()
 
     def get_patients(self):
         records = self.connector.get_records()
-        fill_metadata(records, metadata)
+        fill_metadata(records, self.metadata)
 
-        patients = create_from_list("Patient", records, mapping)
+        patients = create_from_list("Patient", records, self.mappings)
         return patients
