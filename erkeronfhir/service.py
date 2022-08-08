@@ -21,5 +21,7 @@ class Service:
         records = self.connector.get_records()
         fill_metadata(records, self.metadata)
 
-        patients = create_from_list("Patient", records, self.mappings)
+        patients = create_from_list(
+            "Patient", records, self.mappings, self.config["profiles"]
+        )
         return patients
