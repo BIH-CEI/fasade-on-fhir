@@ -20,7 +20,7 @@ def create_from_single(resource_name: str, record: Dict[str, str], mappings):
     for mapped_name, record_name in mappings[resource_name].items():
         if isinstance(record_name, dict):
             record_name, choices = record_name[RECORD_NAME], record_name[RECORD_CHOICES]
-            value = choices.get(record[record_name], choices.get(CHOICES_DEFAULT, None))
+            value = choices.get(record[record_name], None)
             if value:
                 definitions[mapped_name] = value
         else:

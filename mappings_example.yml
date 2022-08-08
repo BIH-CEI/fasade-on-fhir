@@ -6,4 +6,3 @@ ResourceName:
       RecordOption1: ResourceValue1
       RecordOption2: ResourceValue2
       RecordOption3: ResourceValue3
-      default: ResourceValueDefault
