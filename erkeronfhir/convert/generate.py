@@ -11,7 +11,8 @@ def create_from_list(
 
 RECORD_NAME = "name"
 RECORD_CHOICES = "choices"
-CHOICES_DEFAULT = "default"
+RECORD_ID = "record_id"
+SYSTEM_URI = "https://redcap.charite.de/genAdipositas"
 
 
 def create_from_single(resource_name: str, record: Dict[str, str], mappings):
@@ -24,4 +25,14 @@ def create_from_single(resource_name: str, record: Dict[str, str], mappings):
                 definitions[mapped_name] = value
         else:
             definitions[mapped_name] = record[record_name]
+
+    # Add identifier
+    definitions["identifier"] = [
+        {
+            "use": "usual",
+            "value": f"{resource_name}/{record[RECORD_ID]}",
+            "system": SYSTEM_URI,
+        }
+    ]
+
     return construct_fhir_element(resource_name, definitions)
