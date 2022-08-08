@@ -1,7 +1,6 @@
 from typing import Dict, List
 
-FIELD_CHOICES = "select_choices_or_calculations"
-FIELD_NAME = "field_name"
+from erkeronfhir.convert.constants import RECORD_FIELD_CHOICES, RECORD_FIELD_NAME
 
 
 def fill_metadata(records: List[Dict[str, str]], metadata: List[Dict]):
@@ -12,7 +11,7 @@ def fill_metadata(records: List[Dict[str, str]], metadata: List[Dict]):
 def _get_choices(metadata: List[Dict[str, str]]) -> Dict[str, Dict[str, str]]:
     result = {}
     for entry in metadata:
-        choices = entry.get(FIELD_CHOICES, None)
+        choices = entry.get(RECORD_FIELD_CHOICES, None)
         if choices:
             choices = choices.split("|")
 
@@ -23,7 +22,7 @@ def _get_choices(metadata: List[Dict[str, str]]) -> Dict[str, Dict[str, str]]:
             for choice in choices:
                 key, value = tuple(choice.split(",", maxsplit=1))
                 options[key.strip()] = value.strip()
-            result[entry[FIELD_NAME]] = options
+            result[entry[RECORD_FIELD_NAME]] = options
 
     return result
 
