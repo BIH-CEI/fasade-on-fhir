@@ -3,8 +3,8 @@ from typing import Dict
 
 import yaml
 
-CONFIG_FILE = "config.yml"
-MAPPING_FILE = "mappings.yml"
+CONFIG_FILE = "configs/config.yml"
+MAPPING_FILE = "configs/mapping.yml"
 
 
 class FhirConfig:
