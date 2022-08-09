@@ -130,7 +130,3 @@ dmypy.json
 
 # IDEs
 .history
-
-# config files
-config.yml
-mappings.yml
