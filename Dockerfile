@@ -5,7 +5,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY erkeronfhir erkeronfhir
+COPY redcaponfhir redcaponfhir
 COPY api.py .
 
 ENTRYPOINT [ "uvicorn", "api:app", "--host", "0.0.0.0" ]
