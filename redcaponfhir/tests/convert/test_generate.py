@@ -1,7 +1,7 @@
 import unittest
 
-from erkeronfhir.config import config
-from erkeronfhir.convert.generate import create_from_single
+from redcaponfhir.config import config
+from redcaponfhir.convert.generate import create_from_single
 from fhir.resources.patient import Patient
 
 
