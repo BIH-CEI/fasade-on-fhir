@@ -1,7 +1,7 @@
 from typing import Any, Dict, List
 
-from erkeronfhir.config import config
-from erkeronfhir.convert.constants import (
+from redcaponfhir.config import config
+from redcaponfhir.convert.constants import (
     MAPPING_RECORD_CHOICES,
     MAPPING_RECORD_NAME,
     RECORD_FIELD_ID,

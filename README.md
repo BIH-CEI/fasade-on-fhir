@@ -1,4 +1,4 @@
-# ERKERonFHIR
+# REDCap on FHIR
 
 [![Python application](https://github.com/cybernop/ERKER-on-FHIR/actions/workflows/python-app.yml/badge.svg)](https://github.com/cybernop/ERKER-on-FHIR/actions/workflows/python-app.yml)
 [![Docker](https://github.com/cybernop/ERKER-on-FHIR/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/cybernop/ERKER-on-FHIR/actions/workflows/docker-publish.yml)

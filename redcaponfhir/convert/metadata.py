@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from erkeronfhir.convert.constants import RECORD_FIELD_CHOICES, RECORD_FIELD_NAME
+from redcaponfhir.convert.constants import RECORD_FIELD_CHOICES, RECORD_FIELD_NAME
 
 
 def fill_metadata(records: List[Dict[str, str]], metadata: List[Dict]):

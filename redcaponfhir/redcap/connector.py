@@ -1,4 +1,4 @@
-from erkeronfhir.config import config
+from redcaponfhir.config import config
 
 from redcap import Project
 

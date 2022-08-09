@@ -1,6 +1,6 @@
-from erkeronfhir.convert.generate import create_from_list
-from erkeronfhir.convert.metadata import fill_metadata
-from erkeronfhir.redcap.connector import RedcapConnector
+from redcaponfhir.convert.generate import create_from_list
+from redcaponfhir.convert.metadata import fill_metadata
+from redcaponfhir.redcap.connector import RedcapConnector
 
 connector = RedcapConnector()
 records = connector.get_records()
