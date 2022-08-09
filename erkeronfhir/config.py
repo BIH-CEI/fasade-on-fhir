@@ -26,11 +26,11 @@ class RedcapConfig:
 
     @property
     def api_url(self) -> str:
-        return self.config_dict.get("api_url")
+        return self.config_dict.get("api_url", "")
 
     @property
     def api_token(self) -> str:
-        return self.config_dict.get("api_token")
+        return self.config_dict.get("api_token", "")
 
 
 class Config:
