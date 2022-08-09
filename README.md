@@ -21,5 +21,5 @@ docker run --rm \
     -p 8765:8000 \
     [-e http_proxy=<proxy>]
     [-e https_proxy=<proxy>]
-    <image>
+    ghcr.io/cybernop/erker-on-fhir:main
 ```
