@@ -7,5 +7,5 @@ pythonpath = [
   ".",
 ]
 testpaths = [
-  "./erkeronfhir/tests",
+  "./redcaponfhir/tests",
 ]
