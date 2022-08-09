@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 COPY erkeronfhir erkeronfhir
 COPY api.py .
 
-ENTRYPOINT [ "uvicorn", "api:app" ]
+ENTRYPOINT [ "uvicorn", "api:app", "--host", "0.0.0.0" ]

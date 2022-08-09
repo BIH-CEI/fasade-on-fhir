@@ -1,3 +1,9 @@
 redcap:
     api_url: <url>
     api_token: <token>
+
+fhir:
+    profiles:
+        <resource>:
+            - <canonical url>
+    system_uri: <system uri>

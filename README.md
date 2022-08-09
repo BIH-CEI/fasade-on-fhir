@@ -4,8 +4,21 @@
 
 ## Start
 
+### From Source
+
 Start with 
 
 ```bash
 uvicorn api:app --reload
+```
+
+### Using Docker
+
+```bash
+docker run --rm \
+    -v $(pwd)/configs:/app/configs \
+    -p 8765:8000 \
+    [-e http_proxy=<proxy>]
+    [-e https_proxy=<proxy>]
+    <image>
 ```
