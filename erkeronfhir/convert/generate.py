@@ -16,17 +16,18 @@ def create_from_list(resource_name: str, records: List[Dict[str, str]]) -> List[
 def create_from_single(resource_name: str, record: Dict[str, str]):
     # Start with meta information
     definitions = _get_metadata(resource_name, record[RECORD_FIELD_ID])
-    for mapped_name, record_name in config.mappings[resource_name].items():
+    for mapped_name, record_name in config.mapping[resource_name].items():
         if isinstance(record_name, dict):
             record_name, choices = (
                 record_name[MAPPING_RECORD_NAME],
                 record_name[MAPPING_RECORD_CHOICES],
             )
             value = choices.get(record[record_name], None)
-            if value:
-                definitions[mapped_name] = value
         else:
-            definitions[mapped_name] = record[record_name]
+            value = record.get(record_name, None)
+
+        if value:
+            definitions[mapped_name] = value
 
     return construct_fhir_element(resource_name, definitions)
 
@@ -39,7 +40,6 @@ def _get_metadata(resource_name: str, id: int) -> Dict:
     """
 
     result = {
-        "meta": {"profile": config.fhir.profiles_per_resource.get(resource_name)},
         "id": id,
         "identifier": [
             {
@@ -49,5 +49,13 @@ def _get_metadata(resource_name: str, id: int) -> Dict:
             }
         ],
     }
+
+    profiles = config.fhir.profiles_per_resource.get(resource_name)
+    meta = {}
+    if profiles:
+        meta["profile"] = profiles
+
+    if meta:
+        result["meta"] = meta
 
     return result
