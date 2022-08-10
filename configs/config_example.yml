@@ -1,3 +1,7 @@
+auth:
+    algorithm: <algorithm>
+    secret_key: <secret>
+
 redcap:
     api_url: <url>
     api_token: <token>

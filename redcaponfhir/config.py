@@ -7,9 +7,22 @@ CONFIG_FILE = "configs/config.yml"
 MAPPING_FILE = "configs/mapping.yml"
 
 
+class AuthConfig:
+    def __init__(self, config_dict: Dict = {}) -> None:
+        self.config_dict = config_dict
+
+    @property
+    def algorithm(self) -> str:
+        return self.config_dict.get("algorithm", "")
+
+    @property
+    def secret_key(self) -> str:
+        return self.config_dict.get("secret_key", "")
+
+
 class FhirConfig:
-    def __init__(self, config_dict: Dict = None) -> None:
-        self.config_dict = config_dict if config_dict else {}
+    def __init__(self, config_dict: Dict = {}) -> None:
+        self.config_dict = config_dict
 
     @property
     def system_url(self) -> str:
@@ -21,8 +34,8 @@ class FhirConfig:
 
 
 class RedcapConfig:
-    def __init__(self, config_dict: Dict = None) -> None:
-        self.config_dict = config_dict if config_dict else {}
+    def __init__(self, config_dict: Dict = {}) -> None:
+        self.config_dict = config_dict
 
     @property
     def api_url(self) -> str:
@@ -41,12 +54,15 @@ class Config:
         self.__config = yaml.safe_load(config_file.read_text()) if config_file.exists() else None
         self.__mapping = yaml.safe_load(mapping_file.read_text()) if mapping_file.exists() else None
 
-        if self.__config:
-            self.__fhir = FhirConfig(self.__config.get("fhir"))
-            self.__redcap = RedcapConfig(self.__config.get("redcap"))
-        else:
-            self.__fhir = FhirConfig()
-            self.__redcap = RedcapConfig()
+        self.__auth = AuthConfig(self.__config.get("auth")) if self.__config else AuthConfig()
+        self.__fhir = FhirConfig(self.__config.get("fhir")) if self.__config else FhirConfig()
+        self.__redcap = (
+            RedcapConfig(self.__config.get("redcap")) if self.__config else RedcapConfig()
+        )
+
+    @property
+    def auth(self) -> AuthConfig:
+        return self.__auth
 
     @property
     def fhir(self) -> FhirConfig:

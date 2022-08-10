@@ -3,9 +3,7 @@ from typing import Any, Dict
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-
-SECRET_KEY = "your-256-bit-secret"
-ALGORITHM = "HS256"
+from redcaponfhir.config import config
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -18,7 +16,7 @@ def get_token(token: str = Depends(oauth2_scheme)) -> Dict[str, Any]:
     )
 
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, config.auth.secret_key, algorithms=[config.auth.algorithm])
         return payload
     except JWTError:
         raise credentials_exception
