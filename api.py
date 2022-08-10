@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 
+from redcaponfhir.auth import validate_token
 from redcaponfhir.fhir_helpers import create_as_bundle
 from redcaponfhir.responses import FhirJsonResponse
 from redcaponfhir.service import Service
@@ -14,7 +15,7 @@ async def root():
 
 
 @app.get("/Patient", response_class=FhirJsonResponse)
-async def get_patients():
+async def get_patients(token_valid=Depends(validate_token)):
     patients = service.get_patients()
     bundle = create_as_bundle(patients)
     return bundle.dict()
