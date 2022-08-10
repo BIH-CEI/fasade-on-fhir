@@ -23,5 +23,4 @@ def get_token(token: str = Depends(oauth2_scheme)) -> Dict[str, Any]:
 
 
 def validate_token(token: Dict[str, Any] = Depends(get_token)) -> bool:
-    print(token)
     return True
