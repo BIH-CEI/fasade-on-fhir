@@ -3,6 +3,27 @@
 [![Python application](https://github.com/cybernop/ERKER-on-FHIR/actions/workflows/python-app.yml/badge.svg)](https://github.com/cybernop/ERKER-on-FHIR/actions/workflows/python-app.yml)
 [![Docker](https://github.com/cybernop/ERKER-on-FHIR/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/cybernop/ERKER-on-FHIR/actions/workflows/docker-publish.yml)
 
+## Workflow
+
+Multiple parts:
+* REDCap interface to request data using the REDCap API
+    * using pycap
+* Mapping from REDCap records to FHIR resources
+    * dynamic specification from e.g. YAML file
+* FHIR interface to provide read-access for resources
+* Authentication (binding Charite AD)
+
+@startuml
+object REDCap
+object REDCapInterface
+object Mapping
+object FHIRInterface
+
+REDCap <- REDCapInterface
+REDCapInterface <- Mapping
+Mapping <- FHIRInterface
+@enduml
+
 ## Start
 
 ### From Source
