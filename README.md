@@ -23,3 +23,11 @@ docker run --rm \
     [-e https_proxy=<proxy>]
     ghcr.io/cybernop/erker-on-fhir:main
 ```
+
+## Package
+
+Install this repository as Python package using
+
+```bash
+pip install git+https://github.com/BIH-CEI/redcap-on-fhir#egg=redcap-on-fhir
+```
