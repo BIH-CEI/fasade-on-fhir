@@ -1,16 +1,14 @@
+from redcaponfhir.config import config
 from redcaponfhir.convert.generate import create_from_list
-from redcaponfhir.convert.metadata import fill_metadata
-from redcaponfhir.redcap.connector import RedcapConnector
+from redcaponfhir.redcap.provider import RedcapProvider
 
 
 class Service:
     def __init__(self) -> None:
-        self.connector = RedcapConnector()
-        self.metadata = self.connector.get_metadata()
+        self.provider = RedcapProvider(config.redcap.api_url, config.redcap.api_token)
 
     def get_patients(self):
-        records = self.connector.get_records()
-        fill_metadata(records, self.metadata)
+        records = self.provider.get_records()
 
         patients = create_from_list("Patient", records)
         return patients
