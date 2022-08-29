@@ -12,6 +12,6 @@ mapper = Mapper(
     config.fhir.profiles_per_resource,
 )
 
-results = mapper.create_from_list("Obsersations", records)
+results = mapper.create_from_list(records, resource_filter=["Observation"])
 
 pass
