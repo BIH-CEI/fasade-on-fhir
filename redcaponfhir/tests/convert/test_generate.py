@@ -1,20 +1,20 @@
 import unittest
 
 from fhir.resources.patient import Patient
-from redcaponfhir.config import config
-from redcaponfhir.convert.generate import create_from_single
+from redcaponfhir.convert.generate import Mapper
 
 
 class TestGenerateFromSingle(unittest.TestCase):
     @unittest.expectedFailure
     def test_simple(self):
-        config.mapping = {"Patient": {"name": "PatientName"}}
+        mapping = {"Patient": {"name": "$PatientName"}}
 
         PATIENT_NAME = "TestPatient"
 
         record = {"PatientName": PATIENT_NAME, "record_id": 1}
 
-        result = create_from_single("Patient", record)
+        mapper = Mapper(mapping, [], "", {})
+        result = mapper.generate_from_record(record, resource_filter=["Patient"])
 
         self.assertIsInstance(result, Patient)
         self.assertEqual(result.name, PATIENT_NAME)
