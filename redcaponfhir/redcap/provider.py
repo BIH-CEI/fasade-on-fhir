@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 from redcaponfhir.convert.constants import RECORD_FIELD_CHOICES, RECORD_FIELD_NAME
+from redcaponfhir.helpers import clean_empty
 from redcaponfhir.redcap.connector import RedcapConnector
 
 
@@ -15,6 +16,7 @@ class RedcapProvider:
 
         records = self.connector.get_records()
         self.replace_from_choices(records)
+        records = clean_empty(records)
 
         return records
 
