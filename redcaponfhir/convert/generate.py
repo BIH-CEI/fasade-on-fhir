@@ -1,48 +1,69 @@
+import json
+import re
 from typing import Any, Dict, List
 
 from fhir.resources import construct_fhir_element
-from redcaponfhir.convert.constants import (
-    MAPPING_RECORD_CHOICES,
-    MAPPING_RECORD_NAME,
-    RECORD_FIELD_ID,
-)
+from jinja2 import Template
+from redcaponfhir.convert.constants import RECORD_FIELD_ID
+from redcaponfhir.helpers import clean_empty
 
 
 class Mapper:
     def __init__(
         self,
-        resource_mappings: Dict[str, Any],
+        resource_mappings: List[Dict[str, Any]],
         substitutions: Dict[str, Dict[str, str]],
         system_url: str,
         resource_profiles: Dict[str, List[str]],
     ) -> None:
-        self.resource_mappings = resource_mappings
         self.substitutions = substitutions
         self.system_url = system_url
         self.resource_profiles = resource_profiles
 
-    def create_from_list(self, resource_name: str, records: List[Dict[str, str]]) -> List[Any]:
-        return [self.create_from_single(resource_name, record) for record in records]
+        self.generate_resource_templates(resource_mappings)
 
-    def create_from_single(self, resource_name: str, record: Dict[str, str]):
+    def generate_resource_templates(self, mappings: List[Dict[str, Any]]):
+        self.resource_templates = []
+        for entry in mappings:
+            name, template_dict = entry.popitem()
+            string_template = json.dumps(template_dict)
+            string_template = re.sub(r"\$(\w+)", r"{{ \1 }}", string_template)
+            self.resource_templates.append((name, Template(string_template)))
+
+    def create_from_list(
+        self, records: List[Dict[str, str]], resource_filter: List[str] = None
+    ) -> List[Any]:
+        result = []
+        for record in records:
+            resources = self.generate_from_record(record, resource_filter)
+            result += resources
+        return result
+
+    def generate_from_record(self, record: Dict[str, str], resource_filter: List[str] = None):
         # Fill substitutions
         self._apply_substitutions(record)
 
-        # Start with meta information
-        definitions = self._generate_metadata(resource_name, record[RECORD_FIELD_ID])
+        resources = []
+        for resource, template in self.resource_templates:
+            if resource_filter and resource not in resource_filter:
+                continue
 
-        for mapped_name, record_name in self.resource_mappings[resource_name].items():
-            if isinstance(record_name, dict):
-                record_name, choices = (
-                    record_name[MAPPING_RECORD_NAME],
-                    record_name[MAPPING_RECORD_CHOICES],
-                )
-                value = choices.get(record[record_name], None)
-            else:
-                value = record.get(record_name, None)
+            metadata = self._generate_metadata(resource, record[RECORD_FIELD_ID])
+            resource = self._generate_resource_from_record(record, metadata, resource, template)
+            resources.append(resource)
+        return resources
 
-            if value:
-                definitions[mapped_name] = value
+    def _generate_resource_from_record(
+        self,
+        record: Dict[str, str],
+        metadata: Dict,
+        resource_name: str,
+        resource_template: Template,
+    ):
+        rendered = resource_template.render(**record)
+        definitions = json.loads(rendered)
+        definitions.update(metadata)
+        definitions = clean_empty(definitions)
 
         return construct_fhir_element(resource_name, definitions)
 
@@ -66,7 +87,7 @@ class Mapper:
         }
 
         meta = {}
-        if profiles := self.resource_profiles.get(resource_name) is not None:
+        if (profiles := self.resource_profiles.get(resource_name)) is not None:
             meta["profile"] = profiles
 
         if meta:
