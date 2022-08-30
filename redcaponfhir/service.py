@@ -38,5 +38,14 @@ class Service:
             "kind": "capability",
             "date": "2022-08-30",
             "format": ["json"],
+            "rest": [
+                {
+                    "mode": "server",
+                    "resource": [
+                        {"type": "Patient", "interaction": [{"code": "read"}]},
+                        {"type": "Observation", "interaction": [{"code": "read"}]},
+                    ],
+                },
+            ],
         }
         return CapabilityStatement(**definition)
