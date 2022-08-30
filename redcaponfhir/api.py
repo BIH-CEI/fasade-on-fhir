@@ -16,13 +16,13 @@ async def root():
 
 @app.get("/Patient", response_class=FhirJsonResponse)
 async def get_patients(token_valid=Depends(validate_token)):
-    patients = service.get_patients()
-    bundle = create_as_bundle(patients)
+    results = service.get_patients()
+    bundle = create_as_bundle(results)
     return bundle.dict()
 
 
 @app.get("/Observation", response_class=FhirJsonResponse)
 async def get_observations(token_valid=Depends(validate_token)):
-    patients = service.get_observations()
-    bundle = create_as_bundle(patients)
+    results = service.get_observations()
+    bundle = create_as_bundle(results)
     return bundle.dict()

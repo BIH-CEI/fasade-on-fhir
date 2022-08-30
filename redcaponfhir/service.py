@@ -1,3 +1,5 @@
+from typing import List
+
 from redcaponfhir.config import config
 from redcaponfhir.convert.generate import Mapper
 from redcaponfhir.redcap.provider import RedcapProvider
@@ -14,11 +16,11 @@ class Service:
         )
 
     def get_patients(self):
-        records = self.provider.get_records()
-        patients = self.mapper.create_from_list(records, resource_filter=["Patient"])
-        return patients
+        return self._get_resources(resource_filter=["Patient"])
 
     def get_observations(self):
+        return self._get_resources(resource_filter=["Observation"])
+
+    def _get_resources(self, resource_filter: List[str] = None):
         records = self.provider.get_records()
-        observations = self.mapper.create_from_list(records, resource_filter=["Observation"])
-        return observations
+        return self.mapper.create_from_list(records, resource_filter=resource_filter)
