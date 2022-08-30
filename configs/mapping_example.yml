@@ -1,8 +1,15 @@
-ResourceName:
-  ResourceElement: RecordName
-  RecourceElement:
-    name: RecordName
-    choices:
-      RecordOption1: ResourceValue1
-      RecordOption2: ResourceValue2
-      RecordOption3: ResourceValue3
+resources:
+  - Resource1:
+      fhir_field: $redcap_var1
+  - Resource2:
+      field1:
+        subfield1: fix_value1
+        subfield2: fix_value2
+      field2:
+        subfield:
+          - elem1_field1: $redcap_var2
+            elem2_field2: fixed_value3
+substitutions:
+  redcap_var2:
+    option1: substitution1
+    option2: substitution2

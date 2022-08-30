@@ -1,16 +1,26 @@
-from redcaponfhir.convert.generate import create_from_list
-from redcaponfhir.convert.metadata import fill_metadata
-from redcaponfhir.redcap.connector import RedcapConnector
+from typing import List
+
+from redcaponfhir.config import config
+from redcaponfhir.convert.generate import Mapper
+from redcaponfhir.redcap.provider import RedcapProvider
 
 
 class Service:
     def __init__(self) -> None:
-        self.connector = RedcapConnector()
-        self.metadata = self.connector.get_metadata()
+        self.provider = RedcapProvider(config.redcap.api_url, config.redcap.api_token)
+        self.mapper = Mapper(
+            config.mapping.resources,
+            config.mapping.substitutions,
+            config.fhir.system_url,
+            config.fhir.profiles_per_resource,
+        )
 
     def get_patients(self):
-        records = self.connector.get_records()
-        fill_metadata(records, self.metadata)
+        return self._get_resources(resource_filter=["Patient"])
 
-        patients = create_from_list("Patient", records)
-        return patients
+    def get_observations(self):
+        return self._get_resources(resource_filter=["Observation"])
+
+    def _get_resources(self, resource_filter: List[str] = None):
+        records = self.provider.get_records()
+        return self.mapper.create_from_list(records, resource_filter=resource_filter)

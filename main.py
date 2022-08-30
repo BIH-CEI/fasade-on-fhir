@@ -1,13 +1,17 @@
-from redcaponfhir.convert.generate import create_from_list
-from redcaponfhir.convert.metadata import fill_metadata
-from redcaponfhir.redcap.connector import RedcapConnector
+from redcaponfhir.config import config
+from redcaponfhir.convert.generate import Mapper
+from redcaponfhir.redcap.provider import RedcapProvider
 
-connector = RedcapConnector()
+connector = RedcapProvider(config.redcap.api_url, config.redcap.api_token)
 records = connector.get_records()
-metadata = connector.get_metadata()
 
-fill_metadata(records, metadata)
+mapper = Mapper(
+    config.mapping.resources,
+    config.mapping.substitutions,
+    config.fhir.system_url,
+    config.fhir.profiles_per_resource,
+)
 
-patients = create_from_list("Patient", records)
+results = mapper.create_from_list(records, resource_filter=["Observation"])
 
 pass
