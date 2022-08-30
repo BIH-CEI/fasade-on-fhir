@@ -1,3 +1,5 @@
+import resource
+
 from fastapi import Depends, FastAPI
 
 from redcaponfhir.auth import validate_token
@@ -26,3 +28,9 @@ async def get_observations(token_valid=Depends(validate_token)):
     results = service.get_observations()
     bundle = create_as_bundle(results)
     return bundle.dict()
+
+
+@app.get("/metadata", response_class=FhirJsonResponse)
+async def get_metadata():
+    result = service.get_capability()
+    return result.dict()
