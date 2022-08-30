@@ -1,8 +1,13 @@
 from typing import List
 
+import fhir.resources
+from fhir.resources.capabilitystatement import CapabilityStatement
+
 from redcaponfhir.config import config
 from redcaponfhir.convert.generate import Mapper
 from redcaponfhir.redcap.provider import RedcapProvider
+
+__app_name__ = "REDCap on FHIR"
 
 
 class Service:
@@ -24,3 +29,14 @@ class Service:
     def _get_resources(self, resource_filter: List[str] = None):
         records = self.provider.get_records()
         return self.mapper.create_from_list(records, resource_filter=resource_filter)
+
+    def get_capability(self):
+        definition = {
+            "software": {"name": __app_name__},
+            "fhirVersion": fhir.resources.__fhir_version__,
+            "status": "active",
+            "kind": "capability",
+            "date": "2022-08-30",
+            "format": ["json"],
+        }
+        return CapabilityStatement(**definition)
