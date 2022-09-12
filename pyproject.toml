@@ -15,8 +15,8 @@ dependencies = [
   "PyYAML~=6.0",
   "uvicorn[standard]~=0.18.2",
 ]
-description = "A FHIR facade for a REDCap project"
-name = "redcap_on_fhir"
+description = "A FHIR facade for different APIs"
+name = "fasadeonfhir"
 readme = "README.md"
 requires-python = ">=3.10"
 version = "0.0.1"
@@ -26,7 +26,7 @@ build-backend = "hatchling.build"
 requires = ["hatchling"]
 
 [tool.hatch.build]
-packages = ["redcaponfhir"]
+packages = ["fasadeonfhir"]
 
 [tool.black]
 line-length = 100
@@ -37,5 +37,5 @@ pythonpath = [
   ".",
 ]
 testpaths = [
-  "./redcaponfhir/tests",
+  "./fasadeonfhir/tests",
 ]

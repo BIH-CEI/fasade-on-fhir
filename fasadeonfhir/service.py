@@ -3,9 +3,9 @@ from typing import List
 import fhir.resources
 from fhir.resources.capabilitystatement import CapabilityStatement
 
-from redcaponfhir.config import config
-from redcaponfhir.convert.generate import Mapper
-from redcaponfhir.redcap.provider import RedcapProvider
+from fasadeonfhir.config import config
+from fasadeonfhir.convert.generate import Mapper
+from fasadeonfhir.redcap.provider import RedcapProvider
 
 __app_name__ = "REDCap on FHIR"
 
