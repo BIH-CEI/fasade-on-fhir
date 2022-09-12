@@ -19,7 +19,7 @@ description = "A FHIR facade for different APIs"
 name = "fasadeonfhir"
 readme = "README.md"
 requires-python = ">=3.10"
-version = "0.0.1"
+version = "0.1.0"
 
 [build-system]
 build-backend = "hatchling.build"
