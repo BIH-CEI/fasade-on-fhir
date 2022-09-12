@@ -1,18 +1,18 @@
 from typing import List
 
-import fhir.resources
+from fhir.resources import __fhir_version__
 from fhir.resources.capabilitystatement import CapabilityStatement
 
-from redcaponfhir.config import config
-from redcaponfhir.convert.generate import Mapper
-from redcaponfhir.redcap.provider import RedcapProvider
-
-__app_name__ = "REDCap on FHIR"
+from fasadeonfhir.config import config
+from fasadeonfhir.convert.generate import Mapper
 
 
 class Service:
+    __app_name__ = "Fasade on FHIR"
+    __capabilities_rest__ = {}
+    __capabilities_date__ = ""
+
     def __init__(self) -> None:
-        self.provider = RedcapProvider(config.redcap.api_url, config.redcap.api_token)
         self.mapper = Mapper(
             config.mapping.resources,
             config.mapping.substitutions,
@@ -32,20 +32,25 @@ class Service:
 
     def get_capability(self):
         definition = {
-            "software": {"name": __app_name__},
-            "fhirVersion": fhir.resources.__fhir_version__,
+            "software": {"name": self.__app_name__},
+            "fhirVersion": __fhir_version__,
             "status": "active",
             "kind": "capability",
-            "date": "2022-08-30",
+            "date": self.__capabilities_date__,
             "format": ["json"],
             "rest": [
                 {
                     "mode": "server",
-                    "resource": [
-                        {"type": "Patient", "interaction": [{"code": "read"}]},
-                        {"type": "Observation", "interaction": [{"code": "read"}]},
-                    ],
                 },
             ],
         }
+
+        if self.__capabilities_rest__:
+            definition["rest"][0]["resource"] = []
+            resources = definition["rest"][0]["resource"]
+
+            for resource, capability in self.__capabilities_rest__.items():
+                interactions = [{"code": item} for item in capability]
+                resources.append({"type": resource, "interaction": interactions})
+
         return CapabilityStatement(**definition)

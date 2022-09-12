@@ -1,7 +1,7 @@
 import unittest
 
+from fasadeonfhir.convert.generate import Mapper
 from fhir.resources.patient import Patient
-from redcaponfhir.convert.generate import Mapper
 
 
 class TestGenerateFromSingle(unittest.TestCase):
