@@ -37,5 +37,5 @@ uvicorn api:app --reload
 Install this repository as Python package using
 
 ```bash
-pip install git+https://github.com/BIH-CEI/redcap-on-fhir#egg=redcap-on-fhir
+pip install git+https://github.com/BIH-CEI/fasdade-on-fhir@0.1.0#egg=fasadeonfhir
 ```
