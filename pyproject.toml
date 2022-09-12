@@ -13,7 +13,6 @@ dependencies = [
   "pycap~=2.1.0",
   "python-jose~=3.3.0",
   "PyYAML~=6.0",
-  "uvicorn[standard]~=0.18.2",
 ]
 description = "A FHIR facade for different APIs"
 name = "fasadeonfhir"
