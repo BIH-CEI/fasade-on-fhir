@@ -1,5 +1,3 @@
-import resource
-
 from fastapi import Depends, FastAPI
 
 from redcaponfhir.auth import validate_token
