@@ -25,4 +25,5 @@ RUN apk add --virtual build-dependencies build-base \
 COPY --from=builder /app/dist/*.whl .
 RUN pip install $(find . -name "*.whl")
 
-ENTRYPOINT [ "python", "-m", "redcaponfhir" ]
+ENTRYPOINT ["uvicorn", "redcaponfhir.api:app"]
+CMD ["--host", "0.0.0.0"]
